@@ -37,7 +37,9 @@ class RobertaForGazePrediction(nn.Module):
         return_dict=None,
         first_idx=None,
         wlen=None,
-        prop=None
+        prop=None,
+        ablate_wlen=False,
+        ablate_prop=False
     ):
 
         # outputs: a tuple of torch.FloatTensor comprising various elements
@@ -57,11 +59,15 @@ class RobertaForGazePrediction(nn.Module):
         # last_hidden_state (torch.FloatTensor of shape (batch_size, sequence_length, hidden_size))
         # Sequence of hidden-states at the output of the last layer of the model
         x = outputs[0]
-        # Selects "first tokens" and concatenates them
         x = torch.cat([x[i][first_idx[i]] for i in range(len(x))], dim=0)
-        # print(x.shape)
-        x = torch.cat([x,wlen,prop], dim=1)
-        # print(x.shape)
+
+        if not ablate_wlen and not ablate_prop:
+            x = torch.cat([x,wlen,prop], dim=1)
+        elif not ablate_wlen and ablate_prop:
+            x = torch.cat([x,wlen], dim=1)
+        elif ablate_wlen and not ablate_prop:
+            x = torch.cat([x,prop], dim=1)
+
         x = self.dropout_1(x)
         x = self.dense(x)
         x = self.activation_fn[self.activation](x)

@@ -1,9 +1,6 @@
 import sys, csv, logging
 from transformers import RobertaTokenizer
 
-# tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-# tokenizer = RobertaTokenizer.from_pretrained("roberta-large")
-
 def replace_bytes(str):
     str = str.replace("Ġ", "")
     str = str.replace("âĢĵ", "–")
@@ -204,23 +201,3 @@ def preprocess_test(file_path, pretrained_model):
 
     # tokenized idx, valid idx, wlen, prop, five dependent variables
     return [sent_strings, sent_first_idx, sent_wlen, sent_prop, sent_words]
-
-# sent_tokenized_idx, sent_first_idx, sent_wlen, sent_prop, sent_nfix, sent_ffd, sent_gpt, sent_trt, sent_fixprop = preprocess(sys.argv[1])
-# print(len(sent_tokenized_idx))
-# print(len(sent_first_idx))
-# print(len(sent_wlen))
-# print(len(sent_prop))
-# print(len(sent_nfix))
-# print(len(sent_ffd))
-# print(len(sent_gpt))
-# print(len(sent_trt))
-# print(len(sent_fixprop))
-# print(sent_tokenized_idx[0])
-# print(sent_first_idx[0])
-# print(sent_wlen[0])
-# print(sent_prop[0])
-# print(sent_nfix[0])
-# print(sent_ffd[0])
-# print(sent_gpt[0])
-# print(sent_trt[0])
-# print(sent_fixprop[0])

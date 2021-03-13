@@ -48,10 +48,8 @@ def train():
     input_size = {"roberta-base": 768, "roberta-large": 1024}
     roberta = RobertaModel.from_pretrained(opt.pretrained_model)
     tokenizer = RobertaTokenizer.from_pretrained(opt.pretrained_model)
-    # model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model], dropout_1=opt.dropout_1,
-    #                                  hidden_dim=opt.hidden_dim, activation=opt.activation, dropout_2=opt.dropout_2)
-    model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model],
-                                     dropout_1=opt.dropout_1, hidden_dim=int((input_size[opt.pretrained_model]+2)/2), activation=opt.activation,
+    model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model]-opt.ablate_wlen-opt.ablate_prop,
+                                     dropout_1=opt.dropout_1, hidden_dim=opt.hidden_dim, activation=opt.activation,
                                      dropout_2=opt.dropout_2)
     # model.train()
     logging.info(str(model))
@@ -113,7 +111,7 @@ def train():
             dv_tensor = dv_tensor.to(opt.device)
 
             optimizer.zero_grad()
-            outputs = model(**encoded_inputs, first_idx=first_idx, wlen=wlen_tensor, prop=prop_tensor)
+            outputs = model(**encoded_inputs, first_idx=first_idx, wlen=wlen_tensor, prop=prop_tensor, ablate_wlen=opt.ablate_wlen, ablate_prop=opt.ablate_prop)
             loss = criterion(outputs, dv_tensor)
             train_loss += loss.item()
 
@@ -148,7 +146,7 @@ def train():
                 d_prop_tensor = d_prop_tensor.to(opt.device)
                 d_dv_tensor = d_dv_tensor.to(opt.device)
 
-                outputs = model(**d_encoded_inputs, first_idx=d_first_idx, wlen=d_wlen_tensor, prop=d_prop_tensor)
+                outputs = model(**d_encoded_inputs, first_idx=d_first_idx, wlen=d_wlen_tensor, prop=d_prop_tensor, ablate_wlen=opt.ablate_wlen, ablate_prop=opt.ablate_prop)
                 loss = criterion(outputs, d_dv_tensor)
                 # get total SE by multiplying by number of data points
                 dev_loss += loss.item() * len(d_flat_dv)
@@ -197,10 +195,8 @@ def test():
     input_size = {"roberta-base": 768, "roberta-large": 1024}
     roberta = RobertaModel.from_pretrained(opt.pretrained_model)
     tokenizer = RobertaTokenizer.from_pretrained(opt.pretrained_model)
-    # model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model], dropout_1=opt.dropout_1,
-    #                                  hidden_dim=opt.hidden_dim, activation=opt.activation, dropout_2=opt.dropout_2)
-    model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model],
-                                     dropout_1=opt.dropout_1, hidden_dim=int((input_size[opt.pretrained_model]+2)/2), activation=opt.activation,
+    model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model]-opt.ablate_wlen-opt.ablate_prop,
+                                     dropout_1=opt.dropout_1, hidden_dim=opt.hidden_dim, activation=opt.activation,
                                      dropout_2=opt.dropout_2)
     logging.info(str(model))
     num_params = 0
@@ -234,7 +230,7 @@ def test():
         wlen_tensor = wlen_tensor.to(opt.device)
         prop_tensor = prop_tensor.to(opt.device)
 
-        outputs = model(**encoded_inputs, first_idx=first_idx, wlen=wlen_tensor, prop=prop_tensor)
+        outputs = model(**encoded_inputs, first_idx=first_idx, wlen=wlen_tensor, prop=prop_tensor, ablate_wlen=opt.ablate_wlen, ablate_prop=opt.ablate_prop)
         logging.info("Generated model predictions on test.")
         outputs_np = outputs.cpu().detach().numpy()
         outputs_df = pd.DataFrame(data=outputs_np, columns=[opt.dep_var])

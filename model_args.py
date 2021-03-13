@@ -17,7 +17,7 @@ def parse_args(args):
     cmd.add_argument("--batch_size", type=int, default=16, help="Number of sentences in each batch")
     cmd.add_argument("--dev_batch_size", type=int, default=20, help="Number of sentences in each dev batch")
     cmd.add_argument("--dropout_1", default=0.1, type=float, help="First dropout rate")
-    # cmd.add_argument("--hidden_dim", default=128, type=int, help="Number of hidden units")
+    cmd.add_argument("--hidden_dim", default=385, type=int, help="Number of hidden units")
     cmd.add_argument("--activation", default="relu", choices=["relu", "gelu", "elu", "sigmoid", "tanh"], help="Activation function: valid options=[relu, gelu, elu, sigmoid, tanh]")
     cmd.add_argument("--dropout_2", default=0.1, type=float, help="Second dropout rate")
     cmd.add_argument("--learning_rate", default=1e-5, type=float, help="Second dropout rate")
@@ -28,6 +28,8 @@ def parse_args(args):
     cmd.add_argument("--dep_var", required=True, choices=["nfix", "ffd", "gpt", "trt", "fprop"], help="Dependent variable: valid options=[nfix, ffd, gpt, trt, fprop]")
     cmd.add_argument("--pretrained_model", required=True, choices=["roberta-base", "roberta-large"], help="Pretrained model: valid options=[roberta-base, roberta-large]")
     cmd.add_argument("--freeze_roberta", default=False, action="store_true", help="Freeze RoBERTa weights")
+    cmd.add_argument("--ablate_wlen", default=False, action="store_true", help="Ablate 'word length' feature")
+    cmd.add_argument("--ablate_prop", default=False, action="store_true", help="Ablate 'proportion processed' feature")
     cmd.add_argument("--checkpoint", default="", help="Model file to continue training/conduct evaluation with")
 
     opt = cmd.parse_args(args[2:])
