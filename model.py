@@ -61,13 +61,13 @@ class RobertaForGazePrediction(nn.Module):
         x = outputs[0]
         x = torch.cat([x[i][first_idx[i]] for i in range(len(x))], dim=0)
 
-        if not ablate_wlen and not ablate_prop:
-            x = torch.cat([x,wlen,prop], dim=1)
-        elif not ablate_wlen and ablate_prop:
-            x = torch.cat([x,wlen], dim=1)
-        elif ablate_wlen and not ablate_prop:
-            x = torch.cat([x,prop], dim=1)
+        if ablate_wlen:
+            wlen = wlen.fill_(0)
 
+        if ablate_prop:
+            prop = prop.fill_(0)
+
+        x = torch.cat([x, wlen, prop], dim=1)
         x = self.dropout_1(x)
         x = self.dense(x)
         x = self.activation_fn[self.activation](x)

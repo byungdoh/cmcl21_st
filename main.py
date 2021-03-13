@@ -48,7 +48,7 @@ def train():
     input_size = {"roberta-base": 768, "roberta-large": 1024}
     roberta = RobertaModel.from_pretrained(opt.pretrained_model)
     tokenizer = RobertaTokenizer.from_pretrained(opt.pretrained_model)
-    model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model]-opt.ablate_wlen-opt.ablate_prop,
+    model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model],
                                      dropout_1=opt.dropout_1, hidden_dim=opt.hidden_dim, activation=opt.activation,
                                      dropout_2=opt.dropout_2)
     # model.train()
@@ -195,7 +195,7 @@ def test():
     input_size = {"roberta-base": 768, "roberta-large": 1024}
     roberta = RobertaModel.from_pretrained(opt.pretrained_model)
     tokenizer = RobertaTokenizer.from_pretrained(opt.pretrained_model)
-    model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model]-opt.ablate_wlen-opt.ablate_prop,
+    model = RobertaForGazePrediction(pretrained=roberta, input_dim=input_size[opt.pretrained_model],
                                      dropout_1=opt.dropout_1, hidden_dim=opt.hidden_dim, activation=opt.activation,
                                      dropout_2=opt.dropout_2)
     logging.info(str(model))
