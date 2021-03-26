@@ -169,7 +169,6 @@ def train():
             logging.info("=" * 100)
             start_time = time.time()
 
-
 def test():
     opt = parse_args(sys.argv)
     random_seed(opt.seed, use_cuda=opt.device == "cuda")
