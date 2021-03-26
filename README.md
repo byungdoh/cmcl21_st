@@ -40,4 +40,4 @@ python get_mae.py my_predictions.txt truth.txt
 ```
 
 # Questions
-For questions or concerns, please contact Byung-Doh Oh ([oh.531@osu.edu](oh.531@osu.edu)).
+For questions or concerns, please contact Byung-Doh Oh ([oh.531@osu.edu](mailto:oh.531@osu.edu)).
