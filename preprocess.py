@@ -8,7 +8,7 @@ def replace_bytes(str):
 
 def preprocess(file_path, pretrained_model):
     tokenizer = RobertaTokenizer.from_pretrained(pretrained_model)
-    with open(file_path, newline="") as csvfile:
+    with open(file_path, newline="", encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile, delimiter=",", quotechar='"')
         next(reader) # skip header row
         rows = [row for row in reader]
