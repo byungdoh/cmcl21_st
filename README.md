@@ -34,7 +34,7 @@ python main.py test --test_path test_data/test_data.csv \
 Descriptions of other arguments for hyperparameter tuning and feature ablation are available in `model_args.py`.
 
 # Evaluation
-`get_mae.py` can be used to calculate the MAE for each eye-tracking feature. `truth.txt' corresponds to the gold test data available under Participate > Files > #4 PostEval on the [Shared Task CodaLab webpage](https://competitions.codalab.org/competitions/28176#participate-get_starting_kit).
+`get_mae.py` can be used to calculate the MAE for each eye-tracking feature. `truth.txt` corresponds to the gold test data available under `Participate > Files > #4 PostEval` on the [Shared Task CodaLab webpage](https://competitions.codalab.org/competitions/28176#participate-get_starting_kit).
 ```
 python get_mae.py my_predictions.txt truth.txt
 ```
